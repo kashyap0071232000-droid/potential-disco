@@ -1,24 +1,28 @@
-/* Medical Counselling Intelligence Platform Styles */
+/* MedCounselling Intelligence Platform Styles */
 
 :root {
-    --primary-color: #2c3e50;
-    --secondary-color: #3498db;
-    --success-color: #27ae60;
-    --warning-color: #f39c12;
-    --danger-color: #e74c3c;
-    --info-color: #17a2b8;
-    --light-color: #ecf0f1;
-    --dark-color: #2c3e50;
+    --primary-color: #1e3a8a;
+    --secondary-color: #3b82f6;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --info-color: #06b6d4;
+    --medical-blue: #1e40af;
+    --dental-green: #059669;
+    --super-purple: #7c3aed;
+    --light-color: #f8fafc;
+    --dark-color: #1e293b;
     --white: #ffffff;
-    --gray-100: #f8f9fa;
-    --gray-200: #e9ecef;
-    --gray-300: #dee2e6;
-    --gray-400: #ced4da;
-    --gray-500: #adb5bd;
-    --gray-600: #6c757d;
-    --gray-700: #495057;
-    --gray-800: #343a40;
-    --gray-900: #212529;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
 }
 
 * {
@@ -28,132 +32,302 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
     color: var(--gray-800);
-    background-color: var(--gray-100);
+    background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+    min-height: 100vh;
 }
 
 /* Navigation Styles */
 .navbar {
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--medical-blue) 100%);
+    box-shadow: 0 4px 20px rgba(30, 58, 138, 0.15);
+    backdrop-filter: blur(10px);
     transition: all 0.3s ease;
+    padding: 1rem 0;
 }
 
 .navbar-brand {
-    font-weight: bold;
+    font-weight: 700;
     font-size: 1.5rem;
+    color: var(--white) !important;
 }
 
 .navbar-brand i {
     margin-right: 8px;
     color: var(--warning-color);
+    font-size: 1.8rem;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem !important;
+    border-radius: 8px;
+    margin: 0 0.25rem;
+}
+
+.nav-link:hover {
+    color: var(--white) !important;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
 }
 
 /* Main Content */
 .container-fluid {
-    padding-top: 80px;
+    padding-top: 100px;
+}
+
+/* Speciality Selector */
+.speciality-selector {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.speciality-card {
+    background: var(--white);
+    border: 2px solid var(--gray-200);
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.speciality-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gray-300);
+    transition: all 0.3s ease;
+}
+
+.speciality-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border-color: var(--secondary-color);
+}
+
+.speciality-card:hover::before {
+    background: var(--secondary-color);
+}
+
+.speciality-card.active {
+    border-color: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--medical-blue) 100%);
+    color: var(--white);
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(30, 58, 138, 0.2);
+}
+
+.speciality-card.active::before {
+    background: var(--warning-color);
+}
+
+.speciality-card[data-speciality="medical"].active {
+    background: linear-gradient(135deg, var(--medical-blue) 0%, var(--primary-color) 100%);
+}
+
+.speciality-card[data-speciality="dental"].active {
+    background: linear-gradient(135deg, var(--dental-green) 0%, #047857 100%);
+}
+
+.speciality-card[data-speciality="super"].active {
+    background: linear-gradient(135deg, var(--super-purple) 0%, #6d28d9 100%);
+}
+
+.speciality-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--gray-600);
+    transition: all 0.3s ease;
+}
+
+.speciality-card.active .speciality-icon {
+    color: var(--white);
+}
+
+.speciality-card h4 {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+}
+
+.speciality-card p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 0;
 }
 
 /* Card Styles */
 .card {
     border: none;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
     margin-bottom: 20px;
+    background: var(--white);
+    overflow: hidden;
 }
 
 .card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
 }
 
 .card-header {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background: linear-gradient(135deg, var(--primary-color), var(--medical-blue));
     color: white;
-    border-radius: 10px 10px 0 0 !important;
+    border-radius: 16px 16px 0 0 !important;
     border: none;
-    padding: 15px 20px;
+    padding: 1.5rem 2rem;
+    font-weight: 600;
 }
 
 .card-body {
-    padding: 25px;
+    padding: 2rem;
 }
 
 /* Stats Cards */
 .card.bg-primary {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+    background: linear-gradient(135deg, var(--primary-color), var(--medical-blue)) !important;
+    border: none;
+    box-shadow: 0 8px 25px rgba(30, 58, 138, 0.15);
 }
 
 .card.bg-success {
-    background: linear-gradient(135deg, var(--success-color), #2ecc71) !important;
+    background: linear-gradient(135deg, var(--success-color), var(--dental-green)) !important;
+    border: none;
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.15);
 }
 
 .card.bg-info {
-    background: linear-gradient(135deg, var(--info-color), #3498db) !important;
+    background: linear-gradient(135deg, var(--info-color), var(--secondary-color)) !important;
+    border: none;
+    box-shadow: 0 8px 25px rgba(6, 182, 212, 0.15);
 }
 
 .card.bg-warning {
-    background: linear-gradient(135deg, var(--warning-color), #f1c40f) !important;
+    background: linear-gradient(135deg, var(--warning-color), #f97316) !important;
+    border: none;
+    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.15);
 }
 
 /* Button Styles */
 .btn {
-    border-radius: 8px;
-    font-weight: 500;
+    border-radius: 12px;
+    font-weight: 600;
     transition: all 0.3s ease;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 24px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
 }
 
 .btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.action-btn {
+    border-radius: 16px;
+    padding: 1rem 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background: linear-gradient(135deg, var(--primary-color), var(--medical-blue));
 }
 
 .btn-success {
-    background: linear-gradient(135deg, var(--success-color), #2ecc71);
+    background: linear-gradient(135deg, var(--success-color), var(--dental-green));
 }
 
 .btn-info {
-    background: linear-gradient(135deg, var(--info-color), #3498db);
+    background: linear-gradient(135deg, var(--info-color), var(--secondary-color));
 }
 
 .btn-warning {
-    background: linear-gradient(135deg, var(--warning-color), #f1c40f);
+    background: linear-gradient(135deg, var(--warning-color), #f97316);
 }
 
 /* Form Styles */
 .form-control, .form-select {
-    border-radius: 8px;
-    border: 2px solid var(--gray-300);
-    padding: 12px 15px;
+    border-radius: 12px;
+    border: 2px solid var(--gray-200);
+    padding: 14px 18px;
     transition: all 0.3s ease;
+    font-size: 0.95rem;
+    background: var(--white);
 }
 
 .form-control:focus, .form-select:focus {
-    border-color: var(--secondary-color);
-    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+    transform: translateY(-1px);
 }
 
 /* College Cards */
 .college-card {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    background: var(--white);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
+    border: 1px solid var(--gray-100);
+    position: relative;
+    overflow: hidden;
+}
+
+.college-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--medical-blue));
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .college-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    border-color: var(--primary-color);
+}
+
+.college-card:hover::before {
+    opacity: 1;
 }
 
 .college-name {
@@ -294,6 +468,24 @@ body {
     to { transform: rotate(360deg); }
 }
 
+/* Display Styles */
+.display-4 {
+    font-weight: 800;
+    color: var(--gray-900);
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--medical-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.lead {
+    font-size: 1.2rem;
+    color: var(--gray-600);
+    font-weight: 500;
+    line-height: 1.6;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .container-fluid {
@@ -314,6 +506,18 @@ body {
     
     .card-body {
         padding: 15px;
+    }
+    
+    .speciality-card {
+        margin-bottom: 1rem;
+    }
+    
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .lead {
+        font-size: 1rem;
     }
 }
 
@@ -433,6 +637,47 @@ body {
 
 .status-processing {
     background-color: var(--warning-color);
+}
+
+/* Toast Notifications */
+.toast-notification {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    padding: 1rem 1.5rem;
+    z-index: 1000;
+    animation: slideInRight 0.3s ease;
+    border-left: 4px solid var(--success-color);
+}
+
+.toast-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.toast-content i {
+    color: var(--success-color);
+    font-size: 1.2rem;
+}
+
+.toast-content span {
+    font-weight: 500;
+    color: var(--gray-800);
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
 /* Print Styles */

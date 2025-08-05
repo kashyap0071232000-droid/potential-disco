@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Counselling Intelligence Platform</title>
-    <meta name="description" content="Comprehensive medical and dental college counselling data for India">
+    <title>MedCounselling Intelligence Platform</title>
+    <meta name="description" content="Advanced medical, dental & super speciality college counselling intelligence platform for India">
     
     <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#2c3e50">
+    <meta name="theme-color" content="#1e3a8a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Medical Counselling">
+    <meta name="apple-mobile-web-app-title" content="MedCounselling">
     
     <!-- Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -29,10 +29,10 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <i class="fas fa-hospital"></i> Medical Counselling Intelligence
+                <i class="fas fa-stethoscope"></i> MedCounselling Intelligence
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -57,7 +57,7 @@
                 </ul>
                 <div class="navbar-nav">
                     <button class="btn btn-outline-light btn-sm" id="installBtn" style="display: none;">
-                        Install App
+                        <i class="fas fa-download"></i> Install App
                     </button>
                 </div>
             </div>
@@ -70,8 +70,46 @@
         <section id="dashboard" class="mb-5">
             <div class="row">
                 <div class="col-12">
-                    <h1 class="display-4 text-center mb-4">Medical Counselling Intelligence Platform</h1>
-                    <p class="lead text-center">Comprehensive data analysis for medical and dental college admissions in India</p>
+                    <h1 class="display-4 text-center mb-4">MedCounselling Intelligence Platform</h1>
+                    <p class="lead text-center">Advanced medical, dental & super speciality college counselling intelligence</p>
+                </div>
+            </div>
+            
+            <!-- Speciality Selection -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="speciality-selector">
+                        <h3 class="text-center mb-4">Choose Your Speciality</h3>
+                        <div class="row justify-content-center">
+                            <div class="col-md-4 mb-3">
+                                <div class="speciality-card active" data-speciality="medical">
+                                    <div class="speciality-icon">
+                                        <i class="fas fa-heartbeat"></i>
+                                    </div>
+                                    <h4>Medical</h4>
+                                    <p>MBBS, MD, MS Programs</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="speciality-card" data-speciality="dental">
+                                    <div class="speciality-icon">
+                                        <i class="fas fa-tooth"></i>
+                                    </div>
+                                    <h4>Dental</h4>
+                                    <p>BDS, MDS Programs</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="speciality-card" data-speciality="super">
+                                    <div class="speciality-icon">
+                                        <i class="fas fa-brain"></i>
+                                    </div>
+                                    <h4>Super Speciality</h4>
+                                    <p>DM, MCh Programs</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -121,22 +159,22 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-3 mb-2">
-                                    <button class="btn btn-primary w-100" onclick="showCollegeSearch()">
+                                    <button class="btn btn-primary w-100 action-btn" onclick="showCollegeSearch()">
                                         <i class="fas fa-search"></i> Search Colleges
                                     </button>
                                 </div>
                                 <div class="col-md-3 mb-2">
-                                    <button class="btn btn-success w-100" onclick="showCounsellingData()">
+                                    <button class="btn btn-success w-100 action-btn" onclick="showCounsellingData()">
                                         <i class="fas fa-chart-line"></i> View Counselling Data
                                     </button>
                                 </div>
                                 <div class="col-md-3 mb-2">
-                                    <button class="btn btn-info w-100" onclick="showComparison()">
+                                    <button class="btn btn-info w-100 action-btn" onclick="showComparison()">
                                         <i class="fas fa-balance-scale"></i> Compare Rounds
                                     </button>
                                 </div>
                                 <div class="col-md-3 mb-2">
-                                    <button class="btn btn-warning w-100" onclick="showAnalytics()">
+                                    <button class="btn btn-warning w-100 action-btn" onclick="showAnalytics()">
                                         <i class="fas fa-chart-bar"></i> Analytics
                                     </button>
                                 </div>
@@ -171,6 +209,8 @@
                                         <option value="MD">MD</option>
                                         <option value="MS">MS</option>
                                         <option value="MDS">MDS</option>
+                                        <option value="DM">DM</option>
+                                        <option value="MCh">MCh</option>
                                     </select>
                                 </div>
                             </div>
@@ -205,6 +245,8 @@
                                         <option value="PG">PG</option>
                                         <option value="BDS">BDS</option>
                                         <option value="MDS">MDS</option>
+                                        <option value="DM">DM</option>
+                                        <option value="MCh">MCh</option>
                                     </select>
                                 </div>
                                 <div class="col-md-3">

@@ -3,6 +3,7 @@
 class MedicalCounsellingApp {
     constructor() {
         this.currentSection = 'dashboard';
+        this.currentSpeciality = 'medical';
         this.collegesData = [];
         this.counsellingData = [];
         this.isOnline = navigator.onLine;
@@ -27,6 +28,13 @@ class MedicalCounsellingApp {
                 e.preventDefault();
                 const section = e.target.getAttribute('href').substring(1);
                 this.showSection(section);
+            });
+        });
+
+        // Speciality selector
+        document.querySelectorAll('.speciality-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                this.selectSpeciality(e.currentTarget.dataset.speciality);
             });
         });
 
@@ -514,6 +522,113 @@ class MedicalCounsellingApp {
                 console.error('Error syncing data:', error);
             }
         }
+    }
+
+    selectSpeciality(speciality) {
+        this.currentSpeciality = speciality;
+        
+        // Update active card
+        document.querySelectorAll('.speciality-card').forEach(card => {
+            card.classList.remove('active');
+        });
+        document.querySelector(`[data-speciality="${speciality}"]`).classList.add('active');
+        
+        // Update course filter based on speciality
+        this.updateCourseFilter(speciality);
+        
+        // Reload data based on speciality
+        this.loadSpecialityData(speciality);
+        
+        // Show success message
+        this.showSpecialityMessage(speciality);
+    }
+
+    updateCourseFilter(speciality) {
+        const courseFilter = document.getElementById('courseFilter');
+        if (!courseFilter) return;
+        
+        courseFilter.innerHTML = '<option value="">All Courses</option>';
+        
+        const courses = {
+            medical: ['MBBS', 'MD', 'MS'],
+            dental: ['BDS', 'MDS'],
+            super: ['DM', 'MCh']
+        };
+        
+        courses[speciality].forEach(course => {
+            const option = document.createElement('option');
+            option.value = course;
+            option.textContent = course;
+            courseFilter.appendChild(option);
+        });
+    }
+
+    loadSpecialityData(speciality) {
+        // Filter colleges based on speciality
+        this.filterCollegesBySpeciality(speciality);
+        
+        // Update counselling data filters
+        this.updateCounsellingFilters(speciality);
+    }
+
+    filterCollegesBySpeciality(speciality) {
+        const specialityCourses = {
+            medical: ['MBBS', 'MD', 'MS'],
+            dental: ['BDS', 'MDS'],
+            super: ['DM', 'MCh']
+        };
+        
+        const courses = specialityCourses[speciality];
+        const filteredColleges = this.collegesData.filter(college => 
+            college.courses.some(course => courses.includes(course.name))
+        );
+        
+        this.displayColleges(filteredColleges);
+    }
+
+    updateCounsellingFilters(speciality) {
+        const levelFilter = document.getElementById('counsellingLevel');
+        if (!levelFilter) return;
+        
+        levelFilter.innerHTML = '<option value="">All Levels</option>';
+        
+        const levels = {
+            medical: ['UG', 'PG'],
+            dental: ['BDS', 'MDS'],
+            super: ['DM', 'MCh']
+        };
+        
+        levels[speciality].forEach(level => {
+            const option = document.createElement('option');
+            option.value = level;
+            option.textContent = level;
+            levelFilter.appendChild(option);
+        });
+    }
+
+    showSpecialityMessage(speciality) {
+        const messages = {
+            medical: 'Medical speciality selected. Showing MBBS, MD, and MS programs.',
+            dental: 'Dental speciality selected. Showing BDS and MDS programs.',
+            super: 'Super Speciality selected. Showing DM and MCh programs.'
+        };
+        
+        // Create toast notification
+        const toast = document.createElement('div');
+        toast.className = 'toast-notification';
+        toast.innerHTML = `
+            <div class="toast-content">
+                <i class="fas fa-check-circle"></i>
+                <span>${messages[speciality]}</span>
+            </div>
+        `;
+        
+        document.body.appendChild(toast);
+        
+        // Remove toast after 3 seconds
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
     }
 
     setupNavigation() {
