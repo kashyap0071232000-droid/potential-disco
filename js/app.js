@@ -8,6 +8,9 @@ class MedicalCounsellingApp {
         this.counsellingData = [];
         this.isOnline = navigator.onLine;
         this.deferredPrompt = null;
+        this.searchHistory = [];
+        this.recentlyViewed = [];
+        this.currentTheme = 'light';
         
         this.init();
     }
@@ -61,6 +64,21 @@ class MedicalCounsellingApp {
         // Install button
         document.getElementById('installBtn')?.addEventListener('click', () => {
             this.installPWA();
+        });
+
+        // Theme toggle
+        document.getElementById('themeToggle')?.addEventListener('click', () => {
+            this.toggleTheme();
+        });
+
+        // Universal search
+        document.getElementById('universalSearch')?.addEventListener('input', (e) => {
+            this.handleUniversalSearch(e.target.value);
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            this.handleKeyboardShortcuts(e);
         });
     }
 
@@ -629,6 +647,436 @@ class MedicalCounsellingApp {
         setTimeout(() => {
             toast.remove();
         }, 3000);
+    }
+
+    // Universal Search Functions
+    handleUniversalSearch(query) {
+        if (query.length < 2) {
+            this.hideSearchSuggestions();
+            return;
+        }
+
+        const suggestions = this.generateSearchSuggestions(query);
+        this.showSearchSuggestions(suggestions);
+    }
+
+    generateSearchSuggestions(query) {
+        const suggestions = [];
+        const lowerQuery = query.toLowerCase();
+
+        // College name suggestions
+        this.collegesData.forEach(college => {
+            if (college.name.toLowerCase().includes(lowerQuery)) {
+                suggestions.push({
+                    type: 'college',
+                    text: college.name,
+                    subtitle: `${college.city}, ${college.state}`,
+                    action: () => this.showCollegeDetails(college.id)
+                });
+            }
+        });
+
+        // Course suggestions
+        const courses = ['MBBS', 'BDS', 'MD', 'MS', 'MDS', 'DM', 'MCh'];
+        courses.forEach(course => {
+            if (course.toLowerCase().includes(lowerQuery)) {
+                suggestions.push({
+                    type: 'course',
+                    text: course,
+                    subtitle: 'Medical/Dental Course',
+                    action: () => this.filterByCourse(course)
+                });
+            }
+        });
+
+        // State suggestions
+        const states = [...new Set(this.collegesData.map(c => c.state))];
+        states.forEach(state => {
+            if (state.toLowerCase().includes(lowerQuery)) {
+                suggestions.push({
+                    type: 'state',
+                    text: state,
+                    subtitle: 'State',
+                    action: () => this.filterByState(state)
+                });
+            }
+        });
+
+        return suggestions.slice(0, 8); // Limit to 8 suggestions
+    }
+
+    showSearchSuggestions(suggestions) {
+        const container = document.getElementById('searchSuggestions');
+        if (!container) return;
+
+        if (suggestions.length === 0) {
+            container.style.display = 'none';
+            return;
+        }
+
+        container.innerHTML = suggestions.map(suggestion => `
+            <div class="suggestion-item" onclick="app.executeSuggestion('${suggestion.type}', '${suggestion.text}')">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>${suggestion.text}</strong>
+                        <br>
+                        <small class="text-muted">${suggestion.subtitle}</small>
+                    </div>
+                    <span class="badge bg-light text-dark">${suggestion.type}</span>
+                </div>
+            </div>
+        `).join('');
+
+        container.style.display = 'block';
+    }
+
+    hideSearchSuggestions() {
+        const container = document.getElementById('searchSuggestions');
+        if (container) {
+            container.style.display = 'none';
+        }
+    }
+
+    executeSuggestion(type, text) {
+        this.hideSearchSuggestions();
+        
+        switch (type) {
+            case 'college':
+                const college = this.collegesData.find(c => c.name === text);
+                if (college) this.showCollegeDetails(college.id);
+                break;
+            case 'course':
+                this.filterByCourse(text);
+                break;
+            case 'state':
+                this.filterByState(text);
+                break;
+        }
+
+        // Add to search history
+        this.addToSearchHistory(text);
+    }
+
+    addToSearchHistory(query) {
+        if (!this.searchHistory.includes(query)) {
+            this.searchHistory.unshift(query);
+            this.searchHistory = this.searchHistory.slice(0, 10); // Keep last 10
+            localStorage.setItem('searchHistory', JSON.stringify(this.searchHistory));
+        }
+    }
+
+    // Theme Management
+    toggleTheme() {
+        this.currentTheme = this.currentTheme === 'light' ? 'dark' : 'light';
+        document.body.setAttribute('data-theme', this.currentTheme);
+        localStorage.setItem('theme', this.currentTheme);
+        
+        const icon = document.querySelector('#themeToggle i');
+        if (icon) {
+            icon.className = this.currentTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+        }
+    }
+
+    // Keyboard Shortcuts
+    handleKeyboardShortcuts(e) {
+        // Ctrl/Cmd + K for search
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+            e.preventDefault();
+            document.getElementById('universalSearch')?.focus();
+        }
+        
+        // Escape to clear search
+        if (e.key === 'Escape') {
+            const searchInput = document.getElementById('universalSearch');
+            if (searchInput && document.activeElement === searchInput) {
+                searchInput.value = '';
+                this.hideSearchSuggestions();
+            }
+        }
+    }
+
+    // Advanced Filtering Functions
+    filterByCourse(course) {
+        this.currentSpeciality = course.includes('BDS') || course.includes('MDS') ? 'dental' : 
+                                 course.includes('DM') || course.includes('MCh') ? 'super' : 'medical';
+        
+        this.updateCourseFilter(this.currentSpeciality);
+        this.filterCollegesBySpeciality(this.currentSpeciality);
+        
+        this.showToast(`Filtered by ${course} programs`);
+    }
+
+    filterByState(state) {
+        const stateFilter = document.getElementById('stateFilter');
+        if (stateFilter) {
+            stateFilter.value = state;
+            this.filterColleges();
+        }
+        
+        this.showToast(`Filtered by ${state} state`);
+    }
+
+    showToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'toast-notification';
+        toast.innerHTML = `
+            <div class="toast-content">
+                <i class="fas fa-info-circle"></i>
+                <span>${message}</span>
+            </div>
+        `;
+        
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    }
+
+    // Advanced Comparison Functions
+    performComparison() {
+        const selectedColleges = Array.from(document.getElementById('college1').selectedOptions).map(option => option.value);
+        const compareSeats = document.getElementById('compareSeats').checked;
+        const compareFees = document.getElementById('compareFees').checked;
+        const compareRecognition = document.getElementById('compareRecognition').checked;
+        const compareCutoffs = document.getElementById('compareCutoffs').checked;
+
+        if (selectedColleges.length < 2) {
+            this.showToast('Please select at least 2 colleges to compare');
+            return;
+        }
+
+        const comparisonData = this.generateComparisonData(selectedColleges, {
+            compareSeats,
+            compareFees,
+            compareRecognition,
+            compareCutoffs
+        });
+
+        this.displayComparisonResults(comparisonData);
+    }
+
+    generateComparisonData(collegeIds, options) {
+        const colleges = this.collegesData.filter(c => collegeIds.includes(c.id));
+        const comparisonData = {
+            colleges: colleges,
+            metrics: {}
+        };
+
+        if (options.compareSeats) {
+            comparisonData.metrics.seats = this.compareSeatDistribution(colleges);
+        }
+
+        if (options.compareFees) {
+            comparisonData.metrics.fees = this.compareFeeStructure(colleges);
+        }
+
+        if (options.compareRecognition) {
+            comparisonData.metrics.recognition = this.compareRecognitionStatus(colleges);
+        }
+
+        if (options.compareCutoffs) {
+            comparisonData.metrics.cutoffs = this.compareCutoffTrends(colleges);
+        }
+
+        return comparisonData;
+    }
+
+    compareSeatDistribution(colleges) {
+        const seatData = {};
+        colleges.forEach(college => {
+            seatData[college.name] = {
+                total: college.seats?.total || 0,
+                mbbs: college.seats?.mbbs || 0,
+                bds: college.seats?.bds || 0,
+                md: college.seats?.md || 0,
+                ms: college.seats?.ms || 0,
+                mds: college.seats?.mds || 0
+            };
+        });
+        return seatData;
+    }
+
+    compareFeeStructure(colleges) {
+        const feeData = {};
+        colleges.forEach(college => {
+            feeData[college.name] = {
+                government: college.fees?.government || 'N/A',
+                private: college.fees?.private || 'N/A',
+                management: college.fees?.management || 'N/A'
+            };
+        });
+        return feeData;
+    }
+
+    compareRecognitionStatus(colleges) {
+        const recognitionData = {};
+        colleges.forEach(college => {
+            recognitionData[college.name] = {
+                status: college.recognition?.status || 'Unknown',
+                validUntil: college.recognition?.validUntil || 'N/A',
+                lastUpdated: college.recognition?.lastUpdated || 'N/A'
+            };
+        });
+        return recognitionData;
+    }
+
+    compareCutoffTrends(colleges) {
+        const cutoffData = {};
+        colleges.forEach(college => {
+            const collegeCounselling = this.counsellingData.filter(c => c.collegeId === college.id);
+            cutoffData[college.name] = {
+                2023: collegeCounselling.filter(c => c.year === 2023).map(c => ({
+                    round: c.round,
+                    cutoff: c.cutoff,
+                    category: c.category
+                })),
+                2024: collegeCounselling.filter(c => c.year === 2024).map(c => ({
+                    round: c.round,
+                    cutoff: c.cutoff,
+                    category: c.category
+                }))
+            };
+        });
+        return cutoffData;
+    }
+
+    displayComparisonResults(comparisonData) {
+        const container = document.getElementById('comparisonResults');
+        if (!container) return;
+
+        let html = '<div class="comparison-results">';
+        
+        // College Overview
+        html += '<div class="row mb-4">';
+        comparisonData.colleges.forEach(college => {
+            html += `
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6>${college.name}</h6>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Location:</strong> ${college.city}, ${college.state}</p>
+                            <p><strong>Type:</strong> ${college.type}</p>
+                            <p><strong>Total Seats:</strong> ${college.seats?.total || 0}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        html += '</div>';
+
+        // Metrics Comparison
+        if (comparisonData.metrics.seats) {
+            html += this.renderSeatComparison(comparisonData.metrics.seats);
+        }
+
+        if (comparisonData.metrics.fees) {
+            html += this.renderFeeComparison(comparisonData.metrics.fees);
+        }
+
+        if (comparisonData.metrics.recognition) {
+            html += this.renderRecognitionComparison(comparisonData.metrics.recognition);
+        }
+
+        if (comparisonData.metrics.cutoffs) {
+            html += this.renderCutoffComparison(comparisonData.metrics.cutoffs);
+        }
+
+        html += '</div>';
+        container.innerHTML = html;
+    }
+
+    renderSeatComparison(seatData) {
+        let html = '<div class="card mb-4"><div class="card-header"><h6>Seat Distribution Comparison</h6></div><div class="card-body">';
+        html += '<div class="table-responsive"><table class="table table-sm">';
+        html += '<thead><tr><th>College</th><th>MBBS</th><th>BDS</th><th>MD</th><th>MS</th><th>MDS</th><th>Total</th></tr></thead><tbody>';
+        
+        Object.entries(seatData).forEach(([collegeName, seats]) => {
+            html += `<tr>
+                <td><strong>${collegeName}</strong></td>
+                <td>${seats.mbbs}</td>
+                <td>${seats.bds}</td>
+                <td>${seats.md}</td>
+                <td>${seats.ms}</td>
+                <td>${seats.mds}</td>
+                <td><strong>${seats.total}</strong></td>
+            </tr>`;
+        });
+        
+        html += '</tbody></table></div></div></div>';
+        return html;
+    }
+
+    renderFeeComparison(feeData) {
+        let html = '<div class="card mb-4"><div class="card-header"><h6>Fee Structure Comparison</h6></div><div class="card-body">';
+        html += '<div class="table-responsive"><table class="table table-sm">';
+        html += '<thead><tr><th>College</th><th>Government</th><th>Private</th><th>Management</th></tr></thead><tbody>';
+        
+        Object.entries(feeData).forEach(([collegeName, fees]) => {
+            html += `<tr>
+                <td><strong>${collegeName}</strong></td>
+                <td>₹${fees.government}</td>
+                <td>₹${fees.private}</td>
+                <td>₹${fees.management}</td>
+            </tr>`;
+        });
+        
+        html += '</tbody></table></div></div></div>';
+        return html;
+    }
+
+    renderRecognitionComparison(recognitionData) {
+        let html = '<div class="card mb-4"><div class="card-header"><h6>Recognition Status Comparison</h6></div><div class="card-body">';
+        html += '<div class="table-responsive"><table class="table table-sm">';
+        html += '<thead><tr><th>College</th><th>Status</th><th>Valid Until</th><th>Last Updated</th></tr></thead><tbody>';
+        
+        Object.entries(recognitionData).forEach(([collegeName, recognition]) => {
+            const statusClass = recognition.status === 'Active' ? 'text-success' : 
+                              recognition.status === 'Suspended' ? 'text-danger' : 'text-warning';
+            html += `<tr>
+                <td><strong>${collegeName}</strong></td>
+                <td><span class="${statusClass}">${recognition.status}</span></td>
+                <td>${recognition.validUntil}</td>
+                <td>${recognition.lastUpdated}</td>
+            </tr>`;
+        });
+        
+        html += '</tbody></table></div></div></div>';
+        return html;
+    }
+
+    renderCutoffComparison(cutoffData) {
+        let html = '<div class="card mb-4"><div class="card-header"><h6>Cutoff Trends Comparison</h6></div><div class="card-body">';
+        
+        Object.entries(cutoffData).forEach(([collegeName, cutoffs]) => {
+            html += `<h6>${collegeName}</h6>`;
+            html += '<div class="row">';
+            
+            [2023, 2024].forEach(year => {
+                if (cutoffs[year] && cutoffs[year].length > 0) {
+                    html += `<div class="col-md-6"><h6>${year}</h6>`;
+                    html += '<div class="table-responsive"><table class="table table-sm">';
+                    html += '<thead><tr><th>Round</th><th>Category</th><th>Cutoff</th></tr></thead><tbody>';
+                    
+                    cutoffs[year].forEach(round => {
+                        html += `<tr>
+                            <td>${round.round}</td>
+                            <td>${round.category}</td>
+                            <td>${round.cutoff}</td>
+                        </tr>`;
+                    });
+                    
+                    html += '</tbody></table></div></div>';
+                }
+            });
+            
+            html += '</div><hr>';
+        });
+        
+        html += '</div></div>';
+        return html;
     }
 
     setupNavigation() {

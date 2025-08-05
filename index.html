@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedCounselling Intelligence Platform</title>
-    <meta name="description" content="Advanced medical, dental & super speciality college counselling intelligence platform for India">
+    <meta name="description" content="India's most comprehensive medical, dental & super speciality college counselling intelligence platform - Privacy-first, doctor-built, NMC/DCI verified">
     
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#1e3a8a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="MedCounselling">
+    
+    <!-- Privacy & Security -->
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="referrer" content="no-referrer">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://kit.fontawesome.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data: https:; font-src 'self' https://cdn.jsdelivr.net;">
     
     <!-- Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -33,6 +38,7 @@
         <div class="container">
             <a class="navbar-brand" href="#">
                 <i class="fas fa-stethoscope"></i> MedCounselling Intelligence
+                <span class="badge bg-success ms-2">NMC/DCI Verified</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -52,10 +58,16 @@
                         <a class="nav-link" href="#analytics">Analytics</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="#comparison">Compare</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#admin">Admin</a>
                     </li>
                 </ul>
                 <div class="navbar-nav">
+                    <button class="btn btn-outline-light btn-sm me-2" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
                     <button class="btn btn-outline-light btn-sm" id="installBtn" style="display: none;">
                         <i class="fas fa-download"></i> Install App
                     </button>
@@ -71,7 +83,13 @@
             <div class="row">
                 <div class="col-12">
                     <h1 class="display-4 text-center mb-4">MedCounselling Intelligence Platform</h1>
-                    <p class="lead text-center">Advanced medical, dental & super speciality college counselling intelligence</p>
+                    <p class="lead text-center">India's most comprehensive medical, dental & super speciality college counselling intelligence</p>
+                    <div class="text-center mb-4">
+                        <span class="badge bg-primary me-2">Privacy-First</span>
+                        <span class="badge bg-success me-2">Doctor-Built</span>
+                        <span class="badge bg-info me-2">NMC/DCI Verified</span>
+                        <span class="badge bg-warning">1,275+ Medical + 318+ Dental Colleges</span>
+                    </div>
                 </div>
             </div>
             
@@ -149,6 +167,39 @@
                 </div>
             </div>
 
+            <!-- Universal Search Bar -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-search"></i> Universal Search</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="search-container">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                    <input type="text" class="form-control form-control-lg" id="universalSearch" 
+                                           placeholder="Search colleges, courses, states, specializations... (Try: 'Government medical colleges under 50k fees')">
+                                    <button class="btn btn-primary" type="button" onclick="performUniversalSearch()">
+                                        <i class="fas fa-search"></i> Search
+                                    </button>
+                                </div>
+                                <div class="search-suggestions mt-2" id="searchSuggestions"></div>
+                                <div class="popular-searches mt-3">
+                                    <small class="text-muted">Popular searches:</small>
+                                    <div class="mt-1">
+                                        <span class="badge bg-light text-dark me-1 mb-1">Government medical colleges</span>
+                                        <span class="badge bg-light text-dark me-1 mb-1">Low NEET score colleges</span>
+                                        <span class="badge bg-light text-dark me-1 mb-1">No bond colleges</span>
+                                        <span class="badge bg-light text-dark me-1 mb-1">South India medical colleges</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Quick Actions -->
             <div class="row mb-4">
                 <div class="col-12">
@@ -170,7 +221,7 @@
                                 </div>
                                 <div class="col-md-3 mb-2">
                                     <button class="btn btn-info w-100 action-btn" onclick="showComparison()">
-                                        <i class="fas fa-balance-scale"></i> Compare Rounds
+                                        <i class="fas fa-balance-scale"></i> Compare Colleges
                                     </button>
                                 </div>
                                 <div class="col-md-3 mb-2">
@@ -274,41 +325,157 @@
             </div>
         </section>
 
+        <!-- Comparison Section -->
+        <section id="comparison" class="mb-5" style="display: none;">
+            <div class="row">
+                <div class="col-12">
+                    <h2>Advanced College Comparison</h2>
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-balance-scale"></i> Multi-College Comparison Tool</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Select Colleges to Compare</label>
+                                        <select class="form-select" id="college1" multiple>
+                                            <option value="">Loading colleges...</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Comparison Criteria</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="compareSeats" checked>
+                                            <label class="form-check-label" for="compareSeats">Seat Distribution</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="compareFees" checked>
+                                            <label class="form-check-label" for="compareFees">Fee Structure</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="compareRecognition" checked>
+                                            <label class="form-check-label" for="compareRecognition">Recognition Status</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="compareCutoffs" checked>
+                                            <label class="form-check-label" for="compareCutoffs">Cutoff Trends</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <button class="btn btn-primary" onclick="performComparison()">
+                                        <i class="fas fa-chart-line"></i> Compare Colleges
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="comparisonResults" class="mt-4"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Analytics Section -->
         <section id="analytics" class="mb-5" style="display: none;">
             <div class="row">
                 <div class="col-12">
-                    <h2>Advanced Analytics</h2>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Seat Distribution by State</h5>
-                                </div>
-                                <div class="card-body">
-                                    <canvas id="stateChart"></canvas>
-                                </div>
-                            </div>
+                    <h2>Advanced Analytics & Intelligence</h2>
+                    
+                    <!-- Split-Screen Comparison -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5><i class="fas fa-chart-line"></i> Split-Screen Historical Analysis</h5>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Course-wise Seat Distribution</h5>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>2024 Data</h6>
+                                    <canvas id="chart2024"></canvas>
                                 </div>
-                                <div class="card-body">
-                                    <canvas id="courseChart"></canvas>
+                                <div class="col-md-6">
+                                    <h6>2023 Data</h6>
+                                    <canvas id="chart2023"></canvas>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-4">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Counselling Trends (2023-2024)</h5>
+
+                    <!-- Seat Allocation Transparency -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5><i class="fas fa-transparency"></i> Seat Allocation Transparency</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6>AIQ Seat Distribution</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <canvas id="aiqChart"></canvas>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="card-body">
-                                    <canvas id="trendChart"></canvas>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6>State Quota Distribution</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <canvas id="stateQuotaChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Competition Analysis -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5><i class="fas fa-users"></i> Competition Ratio Analysis</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="competitionChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Recognition Status Intelligence -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5><i class="fas fa-shield-alt"></i> NMC Recognition Status Intelligence</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="status-card active">
+                                        <h4>🟢 Active</h4>
+                                        <p>Fully recognized colleges</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="status-card suspended">
+                                        <h4>🔴 Suspended</h4>
+                                        <p>Admission stopped</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="status-card pending">
+                                        <h4>🟡 Pending</h4>
+                                        <p>Under review</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="status-card denied">
+                                        <h4>⚫ Denied</h4>
+                                        <p>Permission not granted</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -321,42 +488,170 @@
         <section id="admin" class="mb-5" style="display: none;">
             <div class="row">
                 <div class="col-12">
-                    <h2>Admin Suite</h2>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Data Upload & Processing</h5>
+                    <h2>Professional Admin Suite</h2>
+                    
+                    <!-- Data Processing Pipeline -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5><i class="fas fa-cogs"></i> Advanced Data Processing Pipeline</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Data Source</label>
+                                        <select class="form-select" id="dataSource">
+                                            <option value="nmc">NMC Official Data</option>
+                                            <option value="dci">DCI Official Data</option>
+                                            <option value="mcc">MCC Counselling Data</option>
+                                            <option value="kea">Karnataka (KEA) Data</option>
+                                            <option value="aiq">AIQ Counselling Data</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Data Type</label>
+                                        <select class="form-select" id="dataType">
+                                            <option value="colleges">Colleges Database</option>
+                                            <option value="counselling">Counselling Data</option>
+                                            <option value="recognition">Recognition Status</option>
+                                            <option value="closed">Closed Colleges</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Upload Files (Drag & Drop)</label>
+                                        <div class="upload-area" id="uploadArea">
+                                            <div class="upload-content">
+                                                <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
+                                                <h6>Drag & Drop Excel/PDF files here</h6>
+                                                <p class="text-muted">Supports Excel (.xlsx, .xls) and PDF files</p>
+                                                <input type="file" class="form-control" id="excelFile" accept=".xlsx,.xls,.pdf" multiple>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" onclick="processData()">
+                                        <i class="fas fa-play"></i> Process & Validate
+                                    </button>
                                 </div>
-                                <div class="card-body">
-                                    <form id="uploadForm">
-                                        <div class="mb-3">
-                                            <label class="form-label">Select Data Type</label>
-                                            <select class="form-select" id="dataType">
-                                                <option value="colleges">Colleges Data</option>
-                                                <option value="counselling">Counselling Data</option>
-                                            </select>
+                                <div class="col-md-6">
+                                    <div class="processing-status">
+                                        <h6>Processing Status</h6>
+                                        <div class="progress mb-3">
+                                            <div class="progress-bar" id="processingProgress" role="progressbar" style="width: 0%"></div>
                                         </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Upload Excel File</label>
-                                            <input type="file" class="form-control" id="excelFile" accept=".xlsx,.xls">
+                                        <div id="processingLog" class="processing-log">
+                                            <div class="log-entry">Ready to process data...</div>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Process & Upload</button>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Data Verification</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div id="verificationStatus">
-                                        <p>No data uploaded for verification</p>
+                    </div>
+
+                    <!-- Multi-Source Validation -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5><i class="fas fa-shield-alt"></i> Multi-Source Validation System</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="validation-card">
+                                        <h6>NMC Validation</h6>
+                                        <div class="validation-status" id="nmcStatus">
+                                            <i class="fas fa-clock"></i> Pending
+                                        </div>
                                     </div>
-                                    <button class="btn btn-success" id="verifyData" disabled>Verify Data</button>
-                                    <button class="btn btn-warning" id="pushData" disabled>Push to Production</button>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="validation-card">
+                                        <h6>DCI Validation</h6>
+                                        <div class="validation-status" id="dciStatus">
+                                            <i class="fas fa-clock"></i> Pending
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="validation-card">
+                                        <h6>Cross-Reference</h6>
+                                        <div class="validation-status" id="crossRefStatus">
+                                            <i class="fas fa-clock"></i> Pending
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Anomaly Detection -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5><i class="fas fa-exclamation-triangle"></i> Anomaly Detection & Quality Assurance</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>Detected Anomalies</h6>
+                                    <div id="anomalyList" class="anomaly-list">
+                                        <div class="anomaly-item">
+                                            <i class="fas fa-info-circle"></i>
+                                            <span>No anomalies detected</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>Quality Metrics</h6>
+                                    <div class="quality-metrics">
+                                        <div class="metric">
+                                            <span>Data Completeness</span>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" style="width: 95%">95%</div>
+                                            </div>
+                                        </div>
+                                        <div class="metric">
+                                            <span>Accuracy Score</span>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-info" style="width: 98%">98%</div>
+                                            </div>
+                                        </div>
+                                        <div class="metric">
+                                            <span>Freshness</span>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-warning" style="width: 87%">87%</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Production Deployment -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5><i class="fas fa-rocket"></i> Production Deployment</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div id="verificationStatus">
+                                        <div class="alert alert-info">
+                                            <h6>Data Verification Status</h6>
+                                            <p>No data uploaded for verification</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="deployment-controls">
+                                        <button class="btn btn-success mb-2" id="verifyData" disabled>
+                                            <i class="fas fa-check-circle"></i> Verify Data
+                                        </button>
+                                        <button class="btn btn-warning mb-2" id="pushData" disabled>
+                                            <i class="fas fa-upload"></i> Push to Production
+                                        </button>
+                                        <button class="btn btn-info mb-2" id="rollbackData" disabled>
+                                            <i class="fas fa-undo"></i> Rollback
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
