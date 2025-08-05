@@ -1,0 +1,66 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: |
+        npm install -g http-server
+        npm install -g lighthouse
+        
+    - name: Build and test
+      run: |
+        # Validate HTML
+        npx html-validate index.html
+        
+        # Check for broken links
+        npx broken-link-checker --recursive --ordered --exclude-external
+        
+        # Run Lighthouse audit
+        npx lighthouse --output=json --output-path=./lighthouse-report.json --chrome-flags="--headless" http://localhost:8080 || true
+        
+    - name: Deploy to Cloudflare Pages
+      uses: cloudflare/pages-action@v1
+      with:
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        projectName: medical-counselling-platform
+        directory: .
+        gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Deploy to GitHub Pages
+      if: github.ref == 'refs/heads/main'
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: .
+        
+    - name: Notify deployment
+      if: always()
+      run: |
+        echo "Deployment completed!"
+        echo "Cloudflare Pages: https://medical-counselling-platform.pages.dev"
+        echo "GitHub Pages: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
+        
+    - name: Upload Lighthouse report
+      uses: actions/upload-artifact@v3
+      with:
+        name: lighthouse-report
+        path: lighthouse-report.json
