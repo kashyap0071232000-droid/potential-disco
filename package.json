@@ -1,0 +1,44 @@
+{
+  "name": "medical-counselling-intelligence-platform",
+  "version": "1.0.0",
+  "description": "Comprehensive PWA for medical and dental college counselling data in India",
+  "main": "index.html",
+  "scripts": {
+    "start": "http-server -p 8080 -c-1",
+    "build": "echo 'Static site - no build required'",
+    "test": "echo 'No tests specified'",
+    "lint": "html-validate index.html",
+    "lighthouse": "lighthouse --output=json --output-path=./lighthouse-report.json",
+    "deploy": "echo 'Deploy via GitHub Actions'",
+    "validate": "npm run lint && echo 'Validation complete'"
+  },
+  "keywords": [
+    "medical",
+    "counselling",
+    "pwa",
+    "college",
+    "admissions",
+    "india",
+    "static-site"
+  ],
+  "author": "Medical Counselling Intelligence Team",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "lighthouse": "^11.4.0",
+    "html-validate": "^8.8.0",
+    "broken-link-checker": "^0.3.0"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/medical-counselling-platform.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/medical-counselling-platform/issues"
+  },
+  "homepage": "https://medical-counselling-platform.pages.dev"
+}

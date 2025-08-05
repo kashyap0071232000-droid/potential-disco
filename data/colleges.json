@@ -1,0 +1,212 @@
+[
+  {
+    "id": 1,
+    "name": "All India Institute of Medical Sciences, New Delhi",
+    "state": "Delhi",
+    "city": "New Delhi",
+    "type": "Government",
+    "courses": [
+      { "name": "MBBS", "seats": 100 },
+      { "name": "MD", "seats": 50 },
+      { "name": "MS", "seats": 30 },
+      { "name": "BDS", "seats": 50 },
+      { "name": "MDS", "seats": 20 }
+    ],
+    "contact": "+91-11-26588500",
+    "website": "https://www.aiims.edu",
+    "address": "Sri Aurobindo Marg, Ansari Nagar, New Delhi - 110029",
+    "established": 1956,
+    "accreditation": "NAAC A++",
+    "nri_seats": 15,
+    "management_seats": 0
+  },
+  {
+    "id": 2,
+    "name": "JSS Medical College, Mysore",
+    "state": "Karnataka",
+    "city": "Mysore",
+    "type": "Private",
+    "courses": [
+      { "name": "MBBS", "seats": 150 },
+      { "name": "BDS", "seats": 100 },
+      { "name": "MD", "seats": 40 },
+      { "name": "MS", "seats": 25 },
+      { "name": "MDS", "seats": 30 }
+    ],
+    "contact": "+91-821-2548356",
+    "website": "https://jssmc.jssuni.edu.in",
+    "address": "JSS Medical College Campus, Bannimantap, Mysore - 570015",
+    "established": 1984,
+    "accreditation": "NAAC A+",
+    "nri_seats": 25,
+    "management_seats": 50
+  },
+  {
+    "id": 3,
+    "name": "Kasturba Medical College, Manipal",
+    "state": "Karnataka",
+    "city": "Manipal",
+    "type": "Private",
+    "courses": [
+      { "name": "MBBS", "seats": 250 },
+      { "name": "BDS", "seats": 100 },
+      { "name": "MD", "seats": 60 },
+      { "name": "MS", "seats": 40 },
+      { "name": "MDS", "seats": 35 }
+    ],
+    "contact": "+91-820-2922400",
+    "website": "https://manipal.edu/kmc-manipal.html",
+    "address": "Madhav Nagar, Manipal - 576104",
+    "established": 1953,
+    "accreditation": "NAAC A++",
+    "nri_seats": 40,
+    "management_seats": 75
+  },
+  {
+    "id": 4,
+    "name": "Christian Medical College, Vellore",
+    "state": "Tamil Nadu",
+    "city": "Vellore",
+    "type": "Private",
+    "courses": [
+      { "name": "MBBS", "seats": 100 },
+      { "name": "BDS", "seats": 40 },
+      { "name": "MD", "seats": 45 },
+      { "name": "MS", "seats": 30 },
+      { "name": "MDS", "seats": 20 }
+    ],
+    "contact": "+91-416-2282010",
+    "website": "https://www.cmch-vellore.edu",
+    "address": "Ida Scudder Road, Vellore - 632004",
+    "established": 1902,
+    "accreditation": "NAAC A++",
+    "nri_seats": 15,
+    "management_seats": 0
+  },
+  {
+    "id": 5,
+    "name": "Maulana Azad Medical College, New Delhi",
+    "state": "Delhi",
+    "city": "New Delhi",
+    "type": "Government",
+    "courses": [
+      { "name": "MBBS", "seats": 120 },
+      { "name": "MD", "seats": 55 },
+      { "name": "MS", "seats": 35 },
+      { "name": "BDS", "seats": 60 },
+      { "name": "MDS", "seats": 25 }
+    ],
+    "contact": "+91-11-23239271",
+    "website": "https://www.mamc.ac.in",
+    "address": "Bahadur Shah Zafar Marg, New Delhi - 110002",
+    "established": 1958,
+    "accreditation": "NAAC A+",
+    "nri_seats": 0,
+    "management_seats": 0
+  },
+  {
+    "id": 6,
+    "name": "Bangalore Medical College and Research Institute",
+    "state": "Karnataka",
+    "city": "Bangalore",
+    "type": "Government",
+    "courses": [
+      { "name": "MBBS", "seats": 150 },
+      { "name": "MD", "seats": 70 },
+      { "name": "MS", "seats": 45 },
+      { "name": "BDS", "seats": 80 },
+      { "name": "MDS", "seats": 30 }
+    ],
+    "contact": "+91-80-26701150",
+    "website": "https://www.bmcri.org",
+    "address": "Fort, K.R. Road, Bangalore - 560002",
+    "established": 1955,
+    "accreditation": "NAAC A+",
+    "nri_seats": 0,
+    "management_seats": 0
+  },
+  {
+    "id": 7,
+    "name": "St. John's Medical College, Bangalore",
+    "state": "Karnataka",
+    "city": "Bangalore",
+    "type": "Private",
+    "courses": [
+      { "name": "MBBS", "seats": 100 },
+      { "name": "BDS", "seats": 50 },
+      { "name": "MD", "seats": 40 },
+      { "name": "MS", "seats": 25 },
+      { "name": "MDS", "seats": 20 }
+    ],
+    "contact": "+91-80-22065000",
+    "website": "https://www.stjohns.in",
+    "address": "Sarjapur Road, Bangalore - 560034",
+    "established": 1963,
+    "accreditation": "NAAC A++",
+    "nri_seats": 20,
+    "management_seats": 30
+  },
+  {
+    "id": 8,
+    "name": "King George's Medical University, Lucknow",
+    "state": "Uttar Pradesh",
+    "city": "Lucknow",
+    "type": "Government",
+    "courses": [
+      { "name": "MBBS", "seats": 200 },
+      { "name": "MD", "seats": 80 },
+      { "name": "MS", "seats": 50 },
+      { "name": "BDS", "seats": 100 },
+      { "name": "MDS", "seats": 40 }
+    ],
+    "contact": "+91-522-2257450",
+    "website": "https://www.kgmu.org",
+    "address": "Chowk, Lucknow - 226003",
+    "established": 1911,
+    "accreditation": "NAAC A+",
+    "nri_seats": 0,
+    "management_seats": 0
+  },
+  {
+    "id": 9,
+    "name": "Grant Medical College, Mumbai",
+    "state": "Maharashtra",
+    "city": "Mumbai",
+    "type": "Government",
+    "courses": [
+      { "name": "MBBS", "seats": 180 },
+      { "name": "MD", "seats": 75 },
+      { "name": "MS", "seats": 45 },
+      { "name": "BDS", "seats": 90 },
+      { "name": "MDS", "seats": 35 }
+    ],
+    "contact": "+91-22-24107000",
+    "website": "https://www.gmc.edu.in",
+    "address": "Byculla, Mumbai - 400008",
+    "established": 1845,
+    "accreditation": "NAAC A+",
+    "nri_seats": 0,
+    "management_seats": 0
+  },
+  {
+    "id": 10,
+    "name": "Madras Medical College, Chennai",
+    "state": "Tamil Nadu",
+    "city": "Chennai",
+    "type": "Government",
+    "courses": [
+      { "name": "MBBS", "seats": 250 },
+      { "name": "MD", "seats": 100 },
+      { "name": "MS", "seats": 60 },
+      { "name": "BDS", "seats": 120 },
+      { "name": "MDS", "seats": 50 }
+    ],
+    "contact": "+91-44-25305000",
+    "website": "https://www.mmc.ac.in",
+    "address": "Park Town, Chennai - 600003",
+    "established": 1835,
+    "accreditation": "NAAC A++",
+    "nri_seats": 0,
+    "management_seats": 0
+  }
+]
